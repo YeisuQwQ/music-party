@@ -1,0 +1,32 @@
+[package]
+name = "yiqidi-core"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.86"
+
+[lib]
+name = "yiqidi_core"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+aes = "0.8"
+base64 = "0.22"
+md-5 = "0.10"
+num-bigint = "0.4"
+rand = "0.8"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["arbitrary_precision"] }
+url = "2.5"
+
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.21"
+ureq = { version = "2.12", features = ["json"] }
+
+[target.'cfg(not(target_os = "android"))'.dependencies]
+ureq = { version = "2.12", default-features = false, features = ["json", "gzip", "native-tls"] }
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+strip = "symbols"
